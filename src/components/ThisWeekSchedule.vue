@@ -4,7 +4,7 @@
 		<div>
 			<el-timeline>
 				<el-timeline-item v-for="(activity, index) in activities" :key="index" :timestamp="activity.timestamp"
-					:hollow="activity.isMe">
+					:hollow="activity.isToday" size="large">
 					<div v-if="activity.isMe" class="specialWeekText">
 						<h2>
 							{{ activity.content }}
@@ -35,6 +35,7 @@ const activities = [
 	{
 		content: 'Lotte kookt',
 		timestamp: 'Woensdag 7 december',
+		isToday: true,
 	},
 	{
 		content: 'Sven kookt',
