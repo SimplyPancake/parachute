@@ -22,7 +22,7 @@
 </template>
 
 <script setup>
-const activities = [
+let activities = [
 	{
 		content: 'Fedde kookt',
 		timestamp: 'Maandag 5 december',
@@ -35,13 +35,16 @@ const activities = [
 	{
 		content: 'Lotte kookt',
 		timestamp: 'Woensdag 7 december',
-		isToday: true,
 	},
 	{
 		content: 'Sven kookt',
 		timestamp: 'Donderdag 8 december',
 	},
 ]
+
+const day = new Date().getDay() //return 0 to 6
+let weekday = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
+let weekIndex = weekday[day] - 1;
 </script>
 
 <style scoped>
