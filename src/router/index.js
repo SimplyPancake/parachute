@@ -1,5 +1,5 @@
 import { createRouter, createWebHistory } from "vue-router";
-import HomeView from "../views/HomeView.vue";
+import { useAccountStore } from "@/stores/account";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -7,7 +7,10 @@ const router = createRouter({
     {
       path: "/",
       name: "home",
-      component: HomeView,
+      component: () => import("../views/HomeView.vue"),
+      meta: {
+        requiresAuth: true,
+      },
     },
     {
       path: "/about",
@@ -25,6 +28,30 @@ const router = createRouter({
       component: () => import("../views/SignUpView.vue"),
     },
   ],
+});
+
+// Check authentication
+router.beforeEach(async (to, from, next) => {
+  const store = useAccountStore();
+  if (to.matched.some((record) => record.meta.requiresAuth)) {
+    // this route requires auth, check if logged in
+    // if not, redirect to login page.
+    store.isLoggedIn().then((success, error) => {
+      if (success) {
+        next();
+      } else {
+        next({ name: "login" });
+      }
+    });
+
+    // if (loggedIn) {
+    //   next({ name: "login" });
+    // } else {
+    //   next(); // go to wherever I'm going
+    // }
+  } else {
+    next(); // does not require auth, make sure to always call next()!
+  }
 });
 
 export default router;

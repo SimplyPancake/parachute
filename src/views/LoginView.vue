@@ -32,12 +32,29 @@
 
 <script setup>
 import { ref } from 'vue';
+import { useAccountStore } from '@/stores/account';
+import { ElMessage } from 'element-plus';
+import { useRouter } from 'vue-router';
+const router = useRouter();
+const accountStore = useAccountStore();
 const email = ref('');
 const pass = ref('');
 
 function login() {
 	console.log('login');
 	// min pass length of 6
+	if (pass.value.length < 6) {
+		ElMessage.error('Wachtwoord moet minimaal 6 karakters lang zijn');
+		return;
+	}
+	accountStore.login(email.value, pass.value)
+		.then(() => {
+			ElMessage.success('Je bent ingelogd!');
+			router.push('/');
+		})
+		.catch((err) => {
+			ElMessage.error(err);
+		});
 }
 
 function gotoSignup() {
