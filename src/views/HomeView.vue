@@ -1,9 +1,12 @@
 <template>
 	<main>
-		<h1>Welkom, <span class="nameText">Daniel</span></h1>
+		<h1>Welkom, <span class="nameText">Daniel</span>
+			<!-- Fix tag styling -->
+			<el-tag class="ml-2">K2</el-tag>
+		</h1>
 		<el-dropdown size="large" class="kookGroupDropdown">
 			<span class="el-dropdown-link">
-				Check je kookgroep! Jij zit in K1
+				Je bekijkt nu het rooster van K2!
 				<el-icon class="el-icon--right">
 					<arrow-down />
 				</el-icon>

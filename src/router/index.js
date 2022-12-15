@@ -27,6 +27,11 @@ const router = createRouter({
       name: "signup",
       component: () => import("../views/SignUpView.vue"),
     },
+    {
+      path: "/enterSchedule",
+      name: "enterSchedule",
+      component: () => import("../views/SignUpView.vue"),
+    },
   ],
 });
 
@@ -36,19 +41,13 @@ router.beforeEach(async (to, from, next) => {
   if (to.matched.some((record) => record.meta.requiresAuth)) {
     // this route requires auth, check if logged in
     // if not, redirect to login page.
-    store.isLoggedIn().then((success, error) => {
-      if (success) {
-        next();
-      } else {
-        next({ name: "login" });
-      }
-    });
-
-    // if (loggedIn) {
-    //   next({ name: "login" });
-    // } else {
-    //   next(); // go to wherever I'm going
-    // }
+    let loggedIn = await store.isLoggedIn();
+    console.log(loggedIn);
+    if (!loggedIn) {
+      next("/login");
+    } else {
+      next();
+    }
   } else {
     next(); // does not require auth, make sure to always call next()!
   }

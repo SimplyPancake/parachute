@@ -5,23 +5,29 @@ import { defineStore } from "pinia";
 export const useAccountStore = defineStore("account", () => {
   let user = null;
   let session = null;
-  let _isLoggedIn = ref(false);
+  let _isLoggedIn = false;
 
-  function isLoggedIn() {
+  // Ugly nested approach, could be improved
+  async function isLoggedIn() {
     return new Promise((resolve, reject) => {
-      if (_isLoggedIn.value) {
+      if (_isLoggedIn) {
         resolve(true);
+        return;
       }
 
       supabase.auth.getSession().then(({ data, error }) => {
+        console.log(data, error);
         if (error) {
-          reject(false);
+          resolve(false);
         } else {
           if (data) {
-            user = data.user;
-            session = data.session;
-            _isLoggedIn.value = true;
-            resolve(true);
+            if (data.session) {
+              user = data.user;
+              session = data.session;
+              _isLoggedIn = true;
+              resolve(true);
+            }
+            resolve(false);
           } else {
             resolve(false);
           }
@@ -45,7 +51,7 @@ export const useAccountStore = defineStore("account", () => {
             // Set the user and session
             user = data.user;
             session = data.session;
-            _isLoggedIn.value = true;
+            _isLoggedIn = true;
             resolve(data);
           }
         });
