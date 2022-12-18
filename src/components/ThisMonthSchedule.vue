@@ -27,7 +27,7 @@
 				<div>
 					<h2>Voel je je geinspireerd?</h2>
 					<h3 class="recommendation">Vul het rooster voor volgende maand in</h3>
-					<el-button type="info" size="large" color="#05FFFF">Vul in</el-button>
+					<el-button type="info" size="large" color="#05FFFF" @click="gotoFillSchedule()">Vul in</el-button>
 				</div>
 			</el-card>
 		</el-col>
@@ -35,6 +35,8 @@
 </template>
 
 <script setup>
+import { useRouter } from 'vue-router';
+const router = useRouter();
 const activities = [
 	{
 		content: 'Fedde kookt',
@@ -88,6 +90,10 @@ const activities = [
 		timestamp: 'Donderdag 8 december',
 	},
 ]
+
+function gotoFillSchedule() {
+	router.push('/enterSchedule')
+}
 </script>
 
 <style scoped>

@@ -30,7 +30,7 @@ const router = createRouter({
     {
       path: "/enterSchedule",
       name: "enterSchedule",
-      component: () => import("../views/SignUpView.vue"),
+      component: () => import("../views/EnterScheduleView.vue"),
     },
   ],
 });
