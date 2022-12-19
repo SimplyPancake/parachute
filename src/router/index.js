@@ -42,7 +42,6 @@ router.beforeEach(async (to, from, next) => {
     // this route requires auth, check if logged in
     // if not, redirect to login page.
     let loggedIn = await store.isLoggedIn();
-    console.log(loggedIn);
     if (!loggedIn) {
       next("/login");
     } else {
