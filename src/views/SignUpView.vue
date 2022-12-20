@@ -18,6 +18,12 @@
 						<el-form-item label="Email">
 							<el-input v-model="email" placeholder="email@email.email" type="email" />
 						</el-form-item>
+						<el-form-item label="Kookgroep">
+							<el-select v-model="kookGroep" class="m-2" placeholder="Select" v-if="showKookGroups">
+								<el-option v-for=" item in kookGroups" :key="item.value" :label="item.label"
+									:value="item.value" />
+							</el-select>
+						</el-form-item>
 						<el-form-item label="Wachtwoord">
 							<el-input v-model="pass" placeholder="123456" type="password" />
 						</el-form-item>
@@ -36,15 +42,35 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { ref, reactive, computed } from 'vue';
 import { ElMessage } from 'element-plus'
 import { supabase } from '../supabase'
+import { useAccountStore } from '@/stores/account';
+const accountStore = useAccountStore();
 
 const email = ref('');
 const pass = ref('');
 const confirmPass = ref('');
-const kookGroep = ref('K1');
+const kookGroep = ref('');
 const name = ref('');
+let kookGroups = reactive({});
+const showKookGroups = ref(false)
+
+// get all kook groups
+accountStore.getKookGroups()
+	.then((groups) => {
+		kookGroups = groups.map((group) => {
+			return {
+				value: group.id,
+				label: group.GroupName
+			}
+		});
+		showKookGroups.value = true;
+	})
+	.catch((err) => {
+		console.log(err)
+		ElMessage.error(err.message);
+	});
 
 function createAccount() {
 	// Check if all form values are not empty

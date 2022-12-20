@@ -137,11 +137,27 @@ export const useAccountStore = defineStore("account", () => {
     });
   }
 
+  function getKookGroups() {
+    return new Promise((resolve, reject) => {
+      supabase
+        .from("KookGroups")
+        .select("*")
+        .then(({ data, error }) => {
+          if (error) {
+            reject(error);
+          } else {
+            resolve(data);
+          }
+        });
+    });
+  }
+
   return {
     login,
     isLoggedIn,
     submitPreferences,
     userName,
     getPreferences,
+    getKookGroups,
   };
 });

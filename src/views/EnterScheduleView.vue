@@ -98,6 +98,7 @@ accountStore.getPreferences(month, year).then((res) => {
 
 function clearOptions() {
 	choices.value = choices.value.map(() => 0)
+	// set changes TODO!
 }
 
 function getDayType(dayString) {

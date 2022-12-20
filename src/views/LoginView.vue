@@ -58,7 +58,7 @@ function login() {
 }
 
 function gotoSignup() {
-	console.log('gotoSignup');
+	router.push('/signup');
 }
 </script>
 
