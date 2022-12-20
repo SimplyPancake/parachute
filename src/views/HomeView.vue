@@ -1,6 +1,6 @@
 <template>
 	<main>
-		<h1>Welkom, <span class="nameText">Daniel</span>
+		<h1>Welkom, <span class="nameText">{{ name }}</span>
 			<!-- Fix tag styling -->
 			<el-tag class="ml-2">K2</el-tag>
 		</h1>
@@ -35,7 +35,11 @@ import ThisWeek from '../components/ThisWeekSchedule.vue'
 import ThisMonth from '../components/ThisMonthSchedule.vue'
 import { KnifeFork } from '@element-plus/icons-vue'
 import { ArrowDown } from '@element-plus/icons-vue'
+import { useAccountStore } from '@/stores/account'
+import { ref } from 'vue'
+const accountStore = useAccountStore()
 
+const name = ref(accountStore.userName)
 </script>
 
 <style scoped>
