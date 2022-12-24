@@ -1,23 +1,8 @@
 <template>
 	<main>
 		<h1>Welkom, <span class="nameText">{{ name }}</span>
-			<!-- Fix tag styling -->
-			<el-tag class="ml-2">K2</el-tag>
 		</h1>
-		<el-dropdown size="large" class="kookGroupDropdown">
-			<span class="el-dropdown-link">
-				Je bekijkt nu het rooster van K2!
-				<el-icon class="el-icon--right">
-					<arrow-down />
-				</el-icon>
-			</span>
-			<template #dropdown>
-				<el-dropdown-menu>
-					<el-dropdown-item>K1</el-dropdown-item>
-					<el-dropdown-item>K2</el-dropdown-item>
-				</el-dropdown-menu>
-			</template>
-		</el-dropdown>
+		<h3>Je zit in {{ kookGroup }}</h3>
 
 		<ThisWeek />
 		<el-divider>
@@ -36,10 +21,11 @@ import ThisMonth from '../components/ThisMonthSchedule.vue'
 import { KnifeFork } from '@element-plus/icons-vue'
 import { ArrowDown } from '@element-plus/icons-vue'
 import { useAccountStore } from '@/stores/account'
-import { ref } from 'vue'
+import { ref, reactive, computed } from 'vue'
 const accountStore = useAccountStore()
 
 const name = ref(accountStore.userName)
+const kookGroup = ref(accountStore.kookGroup);
 </script>
 
 <style scoped>

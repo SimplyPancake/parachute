@@ -103,7 +103,24 @@ function createAccount() {
 				ElMessage.error(error.message);
 				return;
 			}
-			ElMessage.success('Account aangemaakt! Check even je email om je account te activeren');
+			let userId = data.user.id;
+			// then map the kookgroep to the id
+			// update user with name and kookgroep
+			supabase.from('profiles').update({
+				name: name.value,
+				kookgroup: kookGroep.value
+			}).eq('id', userId)
+				.then(({ data, error }) => {
+					if (error) {
+						ElMessage.error(error.message);
+						return;
+					}
+					ElMessage.success('Account aangemaakt! Check even je email om je account te activeren');
+				})
+				.catch((err) => {
+					console.log(err)
+					ElMessage.error(err.message);
+				});
 		})
 }
 </script>

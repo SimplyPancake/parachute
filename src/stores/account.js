@@ -5,9 +5,11 @@ import { collapseItemProps } from "element-plus";
 
 export const useAccountStore = defineStore("account", () => {
   let user = reactive({});
-  let userName = computed(() => user.email.split("@")[0]);
+  let userName = computed(() => extraData.name);
+  let kookGroup = computed(() => extraData.kookGroupName);
   let session = null;
   let _isLoggedIn = false;
+  let extraData = reactive({});
 
   // Ugly nested approach, could be improved
   async function isLoggedIn() {
@@ -17,16 +19,18 @@ export const useAccountStore = defineStore("account", () => {
         return;
       }
 
-      supabase.auth.getSession().then(({ data, error }) => {
+      supabase.auth.getSession().then(async ({ data, error }) => {
         console.log(data, error);
         if (error) {
           resolve(false);
+          return;
         } else {
           if (data) {
             if (data.session) {
               user = data.session.user;
               session = data.session;
               _isLoggedIn = true;
+              await getExtraData();
               resolve(true);
             }
             resolve(false);
@@ -45,7 +49,7 @@ export const useAccountStore = defineStore("account", () => {
           email: email,
           password: pass,
         })
-        .then(({ data, error }) => {
+        .then(async ({ data, error }) => {
           console.log(data, error);
           if (error) {
             reject(error);
@@ -54,6 +58,7 @@ export const useAccountStore = defineStore("account", () => {
             user = data.user;
             session = data.session;
             _isLoggedIn = true;
+            await getExtraData();
             resolve(data);
           }
         });
@@ -152,6 +157,45 @@ export const useAccountStore = defineStore("account", () => {
     });
   }
 
+  function logout() {
+    supabase.auth.signOut();
+    user = {};
+    session = null;
+    _isLoggedIn = false;
+  }
+
+  async function getExtraData() {
+    return new Promise((resolve, reject) => {
+      supabase
+        .from("profiles")
+        .select("*")
+        .eq("id", user.id)
+        .then(async ({ data, error }) => {
+          if (error) {
+            reject(error);
+          } else {
+            console.log(data);
+            extraData.name = data[0].name;
+            extraData.kookGroupId = data[0].kookgroup;
+
+            // Get kook group name
+            await supabase
+              .from("KookGroups")
+              .select("*")
+              .eq("id", data[0].kookgroup)
+              .then(({ data, error }) => {
+                if (error) {
+                  reject(error);
+                } else {
+                  extraData.kookGroupName = data[0].GroupName;
+                }
+              });
+            resolve(data);
+          }
+        });
+    });
+  }
+
   return {
     login,
     isLoggedIn,
@@ -159,5 +203,8 @@ export const useAccountStore = defineStore("account", () => {
     userName,
     getPreferences,
     getKookGroups,
+    logout,
+    extraData,
+    kookGroup,
   };
 });
