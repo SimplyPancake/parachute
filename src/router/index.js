@@ -13,6 +13,23 @@ const router = createRouter({
       },
     },
     {
+      path: "/enterSchedule",
+      name: "enterSchedule",
+      component: () => import("../views/EnterScheduleView.vue"),
+      meta: {
+        requiresAuth: true,
+      },
+    },
+    {
+      path: "/admin",
+      name: "admin",
+      component: () => import("../views/AdminView.vue"),
+      meta: {
+        requiresAdmin: true,
+        requiresAuth: true,
+      },
+    },
+    {
       path: "/about",
       name: "about",
       component: () => import("../views/AboutView.vue"),
@@ -27,11 +44,6 @@ const router = createRouter({
       name: "signup",
       component: () => import("../views/SignUpView.vue"),
     },
-    {
-      path: "/enterSchedule",
-      name: "enterSchedule",
-      component: () => import("../views/EnterScheduleView.vue"),
-    },
   ],
 });
 
@@ -44,9 +56,16 @@ router.beforeEach(async (to, from, next) => {
     let loggedIn = await store.isLoggedIn();
     if (!loggedIn) {
       next("/login");
-    } else {
-      next();
     }
+    // check if user is admin
+    if (to.matched.some((record) => record.meta.requiresAdmin)) {
+      if (store.isAdmin) {
+        next();
+      } else {
+        next("/");
+      }
+    }
+    next();
   } else {
     next(); // does not require auth, make sure to always call next()!
   }

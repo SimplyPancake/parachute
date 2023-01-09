@@ -7,6 +7,7 @@ export const useAccountStore = defineStore("account", () => {
   let user = reactive({});
   let userName = computed(() => extraData.name);
   let kookGroup = computed(() => extraData.kookGroupName);
+  let isAdmin = computed(() => extraData.is_admin);
   let session = null;
   let _isLoggedIn = false;
   let extraData = reactive({});
@@ -177,6 +178,7 @@ export const useAccountStore = defineStore("account", () => {
             console.log(data);
             extraData.name = data[0].name;
             extraData.kookGroupId = data[0].kookgroup;
+            extraData.is_admin = data[0].is_admin;
 
             // Get kook group name
             await supabase
@@ -206,5 +208,6 @@ export const useAccountStore = defineStore("account", () => {
     logout,
     extraData,
     kookGroup,
+    isAdmin,
   };
 });
