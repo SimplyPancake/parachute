@@ -1,22 +1,42 @@
 <template>
 	<main>
-		<h1>Welkom, <span class="nameText">{{ name }}</span>
-		</h1>
-		<h3>Je zit in {{ kookGroup }}</h3>
+		<h1>Welkom, <span class="nameText">{{ name }}</span></h1>
+		<!-- manually edit kookrooster -->
+		<!-- element card -->
+		<h2>Gebruikers</h2>
+		<UsersList style="max-height: 40vh;"></UsersList>
 
-		<!-- Element ui plus card with cooking groups list that can be modified-->
-		<el-card>
-			<div v-for="o in 4" :key="o" class="text item">{{ 'List item ' + o }}</div>
-		</el-card>
+		<el-divider>
+			<el-icon><knife-fork /></el-icon>
+		</el-divider>
+
+		<el-row :gutter="20">
+			<el-col xs="24" :md="12">
+				<el-card style="margin-bottom: 20px;">
+					<h2>Geen zin in het kutrooster? Wijzig het!</h2>
+					<el-button type="primary" size="large">Wijzig rooster</el-button>
+				</el-card>
+			</el-col>
+
+			<el-col xs="24" :md="12">
+				<el-card>
+					<h2>Huts neef wil jij een nieuwe genereren?</h2>
+					<GenerateNewMonth />
+				</el-card>
+			</el-col>
+		</el-row>
 	</main>
 </template>
 
 <script setup>
-import { useAccountStore } from '@/stores/account'
-import { ref, reactive, computed } from 'vue'
-const accountStore = useAccountStore()
+import { useAccountStore } from '@/stores/account';
+import { ref, reactive, computed } from 'vue';
+import { KnifeFork } from '@element-plus/icons-vue';
+import UsersList from '../components/UsersList.vue';
+import GenerateNewMonth from '../components/GenerateNewMonth.vue';
+const accountStore = useAccountStore();
 
-const name = ref(accountStore.userName)
+const name = ref(accountStore.userName);
 const kookGroup = ref(accountStore.kookGroup);
 </script>
 

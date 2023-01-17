@@ -48,6 +48,7 @@ const router = createRouter({
 });
 
 // Check authentication
+// TODO: clean up this mess
 router.beforeEach(async (to, from, next) => {
   const store = useAccountStore();
   if (to.matched.some((record) => record.meta.requiresAuth)) {

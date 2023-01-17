@@ -19,7 +19,6 @@
 import ThisWeek from '../components/ThisWeekSchedule.vue'
 import ThisMonth from '../components/ThisMonthSchedule.vue'
 import { KnifeFork } from '@element-plus/icons-vue'
-import { ArrowDown } from '@element-plus/icons-vue'
 import { useAccountStore } from '@/stores/account'
 import { ref, reactive, computed } from 'vue'
 const accountStore = useAccountStore()

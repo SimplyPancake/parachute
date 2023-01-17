@@ -12,7 +12,7 @@
 	<!-- button to clear -->
 	<!-- add a card -->
 	<el-card class="big-card">
-		<el-calendar v-model="dateInfo"
+		<el-calendar v-model="dateInfo" class=".noselect"
 			:range="[new Date(now.getFullYear(), now.getMonth(), 1), new Date(now.getFullYear(), now.getMonth() + 1, 0)]">
 			<template #date-cell="{ data }">
 				<p :class="getDayType(data.day) == 'disabled' ? 'disabled' : ''">
@@ -159,7 +159,7 @@ function submitChoices() {
 	})
 
 	// send the choices to the backend
-	let month = now.getMonth() + 1
+	let month = now.getMonth()
 	let year = now.getFullYear()
 	accountStore.submitPreferences(choicesToSend, updated, month, year)
 		.then((response) => {

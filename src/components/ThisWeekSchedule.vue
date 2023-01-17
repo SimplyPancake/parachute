@@ -1,6 +1,6 @@
 <template>
 	<h1 class="specialWeekText">Kookrooster deze week</h1>
-	<el-card class="box-card">
+	<el-card>
 		<div>
 			<el-timeline>
 				<el-timeline-item v-for="(activity, index) in activities" :key="index" :timestamp="activity.timestamp"

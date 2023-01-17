@@ -93,12 +93,14 @@ export const useAccountStore = defineStore("account", () => {
 
     return new Promise((resolve, reject) => {
       // first delete all preferences for this month and user
+      let nextMonth = month + 1 > 12 ? 1 : month + 1;
+      let nextMonthYear = month + 1 > 12 ? year + 1 : year;
       supabase
         .from("KookPreferences")
         .delete()
         .eq("userId", user.id)
         .gte("date", `${year}-${month}-01`)
-        .lte("date", `${year}-${month}-31`)
+        .lte("date", `${nextMonthYear}-${nextMonth}-31`)
         .in(
           "date",
           updated.map((item) => `${year}-${month}-${item + 1}`)
@@ -127,12 +129,14 @@ export const useAccountStore = defineStore("account", () => {
   async function getPreferences(month, year) {
     await isLoggedIn();
     return new Promise((resolve, reject) => {
+      let nextMonth = month + 1 > 12 ? 1 : month + 1;
+      let nextMonthYear = month + 1 > 12 ? year + 1 : year;
       supabase
         .from("KookPreferences")
         .select("*")
         .eq("userId", user.id)
         .gte("date", `${year}-${month}-01`)
-        .lte("date", `${year}-${month}-31`)
+        .lte("date", `${nextMonthYear}-${nextMonth}-01`)
         .then(({ data, error }) => {
           if (error) {
             reject(error);
@@ -143,6 +147,25 @@ export const useAccountStore = defineStore("account", () => {
     });
   }
 
+  function getUsers() {
+    return new Promise((resolve, reject) => {
+      if (!isAdmin.value) {
+        reject("Not admin");
+      }
+
+      supabase.rpc("get_users").then(({ data, error }) => {
+        if (error) {
+          reject(error);
+        } else {
+          data = data.map((item) => {
+            return item.j;
+          });
+
+          resolve(data);
+        }
+      });
+    });
+  }
   function getKookGroups() {
     return new Promise((resolve, reject) => {
       supabase
@@ -209,5 +232,6 @@ export const useAccountStore = defineStore("account", () => {
     extraData,
     kookGroup,
     isAdmin,
+    getUsers,
   };
 });
