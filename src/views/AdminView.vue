@@ -3,7 +3,6 @@
 		<h1>Welkom, <span class="nameText">{{ name }}</span></h1>
 		<!-- manually edit kookrooster -->
 		<!-- element card -->
-		<h2>Gebruikers</h2>
 		<UsersList style="max-height: 40vh;"></UsersList>
 
 		<el-divider>
@@ -14,7 +13,8 @@
 			<el-col xs="24" :md="12">
 				<el-card style="margin-bottom: 20px;">
 					<h2>Geen zin in het kutrooster? Wijzig het!</h2>
-					<el-button type="primary" size="large">Wijzig rooster</el-button>
+					<el-button type="primary" size="large" @click="router.push('/editSchedule')">Wijzig
+						rooster</el-button>
 				</el-card>
 			</el-col>
 
@@ -34,6 +34,8 @@ import { ref, reactive, computed } from 'vue';
 import { KnifeFork } from '@element-plus/icons-vue';
 import UsersList from '../components/UsersList.vue';
 import GenerateNewMonth from '../components/GenerateNewMonth.vue';
+import { useRouter } from 'vue-router';
+const router = useRouter();
 const accountStore = useAccountStore();
 
 const name = ref(accountStore.userName);

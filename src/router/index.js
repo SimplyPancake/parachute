@@ -21,6 +21,21 @@ const router = createRouter({
       },
     },
     {
+      path: "/editSchedule/:groupId",
+      name: "editSchedule",
+      component: () => import("../views/EditScheduleView.vue"),
+      meta: {
+        requiresAuth: true,
+        requiresAdmin: true,
+      },
+    },
+    {
+      path: "/viewSchedule/:groupId",
+      name: "viewSchedule",
+      component: () => import("../views/ViewScheduleView.vue"),
+      meta: {},
+    },
+    {
       path: "/admin",
       name: "admin",
       component: () => import("../views/AdminView.vue"),

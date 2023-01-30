@@ -221,6 +221,30 @@ export const useAccountStore = defineStore("account", () => {
     });
   }
 
+  async function getRooster(groupId, month, year) {
+    // Get users in group
+    return new Promise(async (resolve, reject) => {
+      // Get users in group
+      let usersData = await supabase
+        .from("profiles")
+        .select("*")
+        .eq("kookgroup", groupId)
+        .then(async ({ data, error }) => {
+          if (error) {
+            reject(error);
+          } else {
+            resolve(data);
+          }
+        });
+
+      if (usersData.length == 0) {
+        reject("No users in group");
+      }
+
+      // then get the schedule for this kook group
+    });
+  }
+
   return {
     login,
     isLoggedIn,
@@ -233,5 +257,6 @@ export const useAccountStore = defineStore("account", () => {
     kookGroup,
     isAdmin,
     getUsers,
+    getRooster,
   };
 });

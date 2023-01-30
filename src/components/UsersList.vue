@@ -1,6 +1,14 @@
 <template>
 	<!-- Element card with element table of users -->
 	<el-card>
+		<el-row :gutter="20">
+			<el-col :span="4">
+				<h2>Gebruikers</h2>
+			</el-col>
+			<el-col :span="20">
+				<el-button type="primary" size="large">Gebruiker toevoegen</el-button>
+			</el-col>
+		</el-row>
 		<el-table v-if="showTable" :data="usersData" table-layout="auto">
 			<el-table-column prop="name" label="Naam" width="" />
 			<el-table-column prop="kookgroep" label="Kookgroep" width="" />
